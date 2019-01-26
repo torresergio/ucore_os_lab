@@ -95,11 +95,15 @@ struct e820map {
  * struct Page - Page descriptor structures. Each Page describes one
  * physical page. In kern/mm/pmm.h, you can find lots of useful functions
  * that convert Page to other data types, such as phyical address.
+ * Page 在本实验中是指一个物理页，内存操作的最小单位。
+ * Block 在本实验中指的是内存块。内存块是若干个地址连续的Page组成的。
+ * property 在本实验中用于记录内存块中page的个数，记录在内存块中的头一个page中。
+ * page_link 双向链表结构，用于遍历物理页。
  * */
 struct Page {
     int ref;                        // page frame's reference counter
     uint32_t flags;                 // array of flags that describe the status of the page frame
-    unsigned int property;          // the num of free block, used in first fit pm manager
+    unsigned int property;          // the num of free pages, used in first fit pm manager
     list_entry_t page_link;         // free list link
 };
 
@@ -118,10 +122,14 @@ struct Page {
 #define le2page(le, member)                 \
     to_struct((le), struct Page, member)
 
-/* free_area_t - maintains a doubly linked list to record free (unused) pages */
+/* *
+* free_area_t - maintains a doubly linked list to record free (unused) blocks 
+* 用于记录空闲内存块的链表。在本实验中，内存块block是内存连续的物理页page的集合。
+* 内存块用内存连续的物理页的首个物理页表示
+*/
 typedef struct {
     list_entry_t free_list;         // the list header
-    unsigned int nr_free;           // # of free pages in this free list
+    unsigned int nr_free;           // # of free blocks in this free list
 } free_area_t;
 
 #endif /* !__ASSEMBLER__ */

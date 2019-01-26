@@ -2,12 +2,12 @@
 #include <x86.h>
 #include <stdio.h>
 #include <string.h>
-#include <mmu.h>
-#include <memlayout.h>
-#include <pmm.h>
-#include <default_pmm.h>
-#include <sync.h>
-#include <error.h>
+#include "mmu.h"
+#include "memlayout.h"
+#include "pmm.h"
+#include "default_pmm.h"
+#include "sync.h"
+#include "error.h"
 
 /* *
  * Task State Segment:
