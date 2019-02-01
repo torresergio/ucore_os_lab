@@ -98,7 +98,7 @@ struct e820map {
  * Page 在本实验中是指一个物理页，内存操作的最小单位。
  * Block 在本实验中指的是内存块。内存块是若干个地址连续的Page组成的。
  * property 在本实验中用于记录内存块中page的个数，记录在内存块中的头一个page中。
- * page_link 双向链表结构，用于遍历物理页。
+ * page_link 双向链表结构，用于遍历各个Block中的首个物理页(实际就是用于遍历所有的Block)。
  * */
 struct Page {
     int ref;                        // page frame's reference counter

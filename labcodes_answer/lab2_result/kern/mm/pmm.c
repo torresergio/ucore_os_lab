@@ -2,12 +2,12 @@
 #include <x86.h>
 #include <stdio.h>
 #include <string.h>
-#include <mmu.h>
-#include <memlayout.h>
-#include <pmm.h>
-#include <default_pmm.h>
-#include <sync.h>
-#include <error.h>
+#include "mmu.h"
+#include "memlayout.h"
+#include "pmm.h"
+#include "default_pmm.h"
+#include "sync.h"
+#include "error.h"
 
 /* *
  * Task State Segment:
@@ -370,6 +370,7 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
         memset(KADDR(pa), 0, PGSIZE);
         *pdep = pa | PTE_U | PTE_W | PTE_P;
     }
+    // cprintf("%0xd  %0xd %0xd\n", la, &((pte_t *)KADDR(PDE_ADDR(*pdep)))[PTX(la)], PTX(la));
     return &((pte_t *)KADDR(PDE_ADDR(*pdep)))[PTX(la)];
 }
 
