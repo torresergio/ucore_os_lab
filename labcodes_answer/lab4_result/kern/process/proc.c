@@ -314,7 +314,7 @@ do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf) {
 
     proc->parent = current;
 
-    if (setup_kstack(proc) != 0) {
+    if (setup_kstack(proc) != 0) { // 分配内核栈，采用内存中连续的两个物理页。
         goto bad_fork_cleanup_proc;
     }
     if (copy_mm(clone_flags, proc) != 0) {

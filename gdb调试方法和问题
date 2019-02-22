@@ -1,5 +1,5 @@
 工程可以使用两种方法通过gdb调试：
 --1.修改tools/gdbinit 通过make debug命令调试。
 --2.若在使用方法1的时候出现cannot find bounds of current function，可使用如下方法：
-----qemu -S -s -hda ucore.img -monitor stdio #启动qemu并让其想悬停
+----qemu -S -s -hda ucore.img -drive file=swap.img,media=disk,cache=writeback -monitor stdio #启动qemu并让其想悬停
 ----gdb --> file ./bin/kernel --> target remote:1234 --> break somewhere --> continue 
