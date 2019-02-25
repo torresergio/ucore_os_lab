@@ -4,7 +4,7 @@ switch_to:                      # switch_to(from, to)
 
     # save from's registers
     movl 4(%esp), %eax          # eax points to from
-    popl 0(%eax)                # save eip !popl
+    popl 0(%eax)                # save eip !popl 由于调用switch_to的call指令会push eip，所以直接pop可以获取eip的值。 与27行对应。
     movl %esp, 4(%eax)
     movl %ebx, 8(%eax)
     movl %ecx, 12(%eax)
@@ -24,7 +24,6 @@ switch_to:                      # switch_to(from, to)
     movl 8(%eax), %ebx
     movl 4(%eax), %esp
 
-    pushl 0(%eax)               # push eip
-
+    pushl 0(%eax)               # push eip 将指定的eip push到栈顶，ret指令会将栈顶的值pop到eip寄存器中，实现进程切换。
+                                # 进程切换与函数跳转本质是相同的，都是通过改变eip实现指令的跳转。
     ret
-
