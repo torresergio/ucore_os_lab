@@ -1,4 +1,7 @@
 汇编相关内容，用于理解实验中一些汇编语言的用法。
+
+--本实验的汇编是AT&T格式的汇编，形式为 movl src dst
+
 1.常见伪指令和用法
 ----1. 符号定义伪指令 .global .local .set .equ
     ---- .global symbol : 使得符号symbol对外部文件可见，变为整个工程的全局变量。
@@ -22,3 +25,21 @@
     ---- .arm : 定义以下代码使用arm指令集进行编译。
     ---- .thumb : 定义以下代码使用thumb指令集进行编译。
     ---- .extern : 用于声明一个外部符号。
+
+2.汇编中的call和ret指令以及函数调用过程中堆栈(ebp esp)的变化。
+--1.call和ret指令：call和ret指令是汇编函数中一对跳转指令，用于实现指令的跳转。call和ret指令的过程如下。
+    call func : push %eip; movl addr(func) %eip
+    # call指令在执行的过程中其实执行了两部操作，首先将当前eip的值入栈保存，并设置eip到指定的函数地址，实现函数的跳转。
+    ret : pop eip
+    # 与 call相对应，ret指令将栈中保存的之前的eip的值恢复，实现函数的跳转。
+--2.函数调用过程中堆栈(ebp esp)的变化。
+    --调用开始时候，通过 push %ebp; movl %esp %ebp;
+    # 首先将当前栈底保存起来，并改变栈底的值，生成一个新的空的栈（栈底和栈顶的值相等）。
+    # 就是 保存ebp（旧的栈） +　创建新的栈
+    --调用结束时候，movl %ebp %esp; pop %ebp;
+    # 首先通过设置esp等于ebp销毁栈，然后恢复ebp的值恢复之前的栈。
+    # 就是 销毁新的栈 +　恢复ebp（旧的栈）
+
+--3.因此一个函数通常开头会有 push %ebp; movl %esp %ebp;用于保存旧的栈创建新的栈。在结束时候会有
+    movl %ebp %esp; pop %ebp;用来销毁当前栈，恢复旧的栈。
+    注: leave 等价于 movl %ebp %esp; pop %ebp;
