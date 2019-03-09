@@ -43,3 +43,10 @@
 --3.因此一个函数通常开头会有 push %ebp; movl %esp %ebp;用于保存旧的栈创建新的栈。在结束时候会有
     movl %ebp %esp; pop %ebp;用来销毁当前栈，恢复旧的栈。
     注: leave 等价于 movl %ebp %esp; pop %ebp;
+
+3.汇编中的int和iret指令过程。
+--1.int和iret这对指定有点类似call和ret指令，相对而言int和iret指令做的工作更多一些，用于进入和返回中断。
+--2.int和iret的工作更多体现在：
+----1.int 也会push eip将eip保存在占中，但同时由于涉及到长跳转，也会push cs和eflags将这两个寄存器在栈中保存起来。
+----2.iret指令相对int指令，除了pop eip意外还有pop cs和eflags，用于恢复相关寄存器的值。另外，如果检测到特权级的变化，iret指令还负责pop ss和esp，用于切换栈。
+--3.这对指令可以参见struct trapframe的使用。

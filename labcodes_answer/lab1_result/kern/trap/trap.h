@@ -77,6 +77,7 @@ struct trapframe {
     uint16_t tf_padding4;
     uint32_t tf_eflags;
     /* below here only when crossing rings, such as from user to kernel */
+    /* tr_esp和tf_ss仅仅当特权级发生变化时候有用，用于切换堆栈。可以参照iret的用法。 */
     uintptr_t tf_esp;
     uint16_t tf_ss;
     uint16_t tf_padding5;
